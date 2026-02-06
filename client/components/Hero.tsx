@@ -5,9 +5,9 @@ export default function Hero() {
     <section className="relative h-screen w-full overflow-hidden">
       {/* Hero Image */}
       <div className="absolute inset-0">
-        <img 
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" 
-          alt="Stylish models in elegant clothing" 
+        <img
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop"
+          alt="Stylish models in elegant clothing"
           className="w-full h-full object-cover"
         />
         {/* Overlay */}
@@ -24,18 +24,19 @@ export default function Hero() {
             L'ÉLÉGANCE
           </h1>
           <p className="text-xl md:text-2xl font-light mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
-            Redefining modern luxury through smart craftsmanship and timeless design.
+            Redefining modern luxury through smart craftsmanship and timeless
+            design.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-700">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-white text-black hover:bg-white/90 rounded-none h-14 px-10 text-xs font-bold uppercase tracking-widest"
             >
               Shop Now
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Button
+              size="lg"
+              variant="outline"
               className="text-white border-white hover:bg-white hover:text-black rounded-none h-14 px-10 text-xs font-bold uppercase tracking-widest"
             >
               Explore Collection
@@ -46,7 +47,9 @@ export default function Hero() {
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
-        <span className="text-white/60 text-[10px] uppercase tracking-widest mb-2">Scroll</span>
+        <span className="text-white/60 text-[10px] uppercase tracking-widest mb-2">
+          Scroll
+        </span>
         <div className="w-[1px] h-12 bg-gradient-to-b from-white to-transparent" />
       </div>
     </section>
