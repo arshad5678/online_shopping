@@ -1,6 +1,19 @@
 import { Button } from "@/components/ui/button";
 
-export default function Hero() {
+/**
+ * Hero Component Props
+ * @param onShopNow - Callback when "Shop Now" button is clicked
+ * @param onExploreCollection - Callback when "Explore Collection" button is clicked
+ */
+interface HeroProps {
+  onShopNow?: () => void;
+  onExploreCollection?: () => void;
+}
+
+export default function Hero({
+  onShopNow,
+  onExploreCollection,
+}: HeroProps) {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Hero Image */}
@@ -31,6 +44,7 @@ export default function Hero() {
             <Button
               size="lg"
               className="bg-white text-black hover:bg-white/90 rounded-none h-14 px-10 text-xs font-bold uppercase tracking-widest"
+              onClick={onShopNow}
             >
               Shop Now
             </Button>
@@ -38,6 +52,7 @@ export default function Hero() {
               size="lg"
               variant="outline"
               className="text-white border-white hover:bg-white hover:text-black rounded-none h-14 px-10 text-xs font-bold uppercase tracking-widest"
+              onClick={onExploreCollection}
             >
               Explore Collection
             </Button>
