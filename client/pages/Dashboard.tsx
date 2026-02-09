@@ -108,7 +108,7 @@ export default function Dashboard() {
         <div className="flex gap-4 justify-center">
           <Button
             variant="outline"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="rounded-none"
           >
             ← Back to Home

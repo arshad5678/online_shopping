@@ -65,27 +65,26 @@ export default function ModeSelection() {
               {/* Title & Description */}
               <h2 className="text-2xl font-serif font-bold mb-3">Enterprise Mode</h2>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                For businesses and bulk orders. Access wholesale pricing, corporate accounts, 
-                and dedicated support for your organization's fashion needs.
+                Register as a business store to manage your inventory, track sales, and streamline operations. Enterprise mode is designed for stores and businesses to efficiently handle their product catalog, monitor stock levels, and access analytics for growth.
               </p>
 
               {/* Features List */}
               <ul className="space-y-2 mb-6 text-sm">
                 <li className="flex items-center gap-2 text-muted-foreground">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  Bulk ordering discounts
+                  Inventory management dashboard
                 </li>
                 <li className="flex items-center gap-2 text-muted-foreground">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  Corporate billing options
+                  Real-time stock tracking
                 </li>
                 <li className="flex items-center gap-2 text-muted-foreground">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  Dedicated account manager
+                  Sales analytics and reporting
                 </li>
                 <li className="flex items-center gap-2 text-muted-foreground">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  Priority shipping
+                  Business profile registration
                 </li>
               </ul>
 
