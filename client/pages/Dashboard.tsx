@@ -42,26 +42,8 @@ export default function Dashboard() {
           Welcome back! Here's your account overview.
         </p>
 
-        {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {/* Account Card */}
-          <div className="bg-card border rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center mb-4">
-              <User className="w-8 h-8 text-accent mr-3" />
-              <h2 className="text-2xl font-semibold">Account</h2>
-            </div>
-            <p className="text-muted-foreground mb-4">
-              Manage your profile information and preferences.
-            </p>
-            <Button
-              variant="outline"
-              className="w-full rounded-none"
-              onClick={() => alert("Account settings coming soon")}
-            >
-              View Profile
-            </Button>
-          </div>
-
+        {/* Dashboard Grid - Only Orders Card Remains */}
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-6 mb-12">
           {/* Orders Card */}
           <div className="bg-card border rounded-lg p-6 hover:shadow-lg transition-shadow">
             <div className="flex items-center mb-4">
@@ -77,24 +59,6 @@ export default function Dashboard() {
               onClick={() => alert("Order tracking coming soon")}
             >
               View Orders
-            </Button>
-          </div>
-
-          {/* Settings Card */}
-          <div className="bg-card border rounded-lg p-6 hover:shadow-lg transition-shadow">
-            <div className="flex items-center mb-4">
-              <Settings className="w-8 h-8 text-accent mr-3" />
-              <h2 className="text-2xl font-semibold">Settings</h2>
-            </div>
-            <p className="text-muted-foreground mb-4">
-              Adjust your preferences and notification settings.
-            </p>
-            <Button
-              variant="outline"
-              className="w-full rounded-none"
-              onClick={() => alert("Settings coming soon")}
-            >
-              Configure
             </Button>
           </div>
         </div>

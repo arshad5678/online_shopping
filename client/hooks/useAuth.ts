@@ -16,6 +16,19 @@ export interface User {
  * Users can register, login, and logout
  */
 export function useAuth() {
+    // Listen for storage events and update user state if auth_user changes
+    useEffect(() => {
+      const handleStorage = () => {
+        const savedUser = localStorage.getItem("auth_user");
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
+        } else {
+          setUser(null);
+        }
+      };
+      window.addEventListener("storage", handleStorage);
+      return () => window.removeEventListener("storage", handleStorage);
+    }, []);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +60,7 @@ export function useAuth() {
 
     // Load current user
     const savedUser = localStorage.getItem("auth_user");
+    console.log('[useAuth] Loaded auth_user from localStorage:', savedUser);
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
@@ -57,14 +71,20 @@ export function useAuth() {
     setIsLoading(false);
   }, []);
 
-  // Save user to localStorage when it changes
+  // Save user to localStorage when it changes, but don't remove on initial mount
+  const [hasLoaded, setHasLoaded] = useState(false);
   useEffect(() => {
+    if (!hasLoaded) return;
     if (user) {
       localStorage.setItem("auth_user", JSON.stringify(user));
     } else {
       localStorage.removeItem("auth_user");
     }
-  }, [user]);
+  }, [user, hasLoaded]);
+
+  useEffect(() => {
+    setHasLoaded(true);
+  }, []);
 
   /**
    * Register a new user
@@ -150,6 +170,7 @@ export function useAuth() {
 
   return {
     user,
+    setUser,
     isLoading,
     isAuthenticated: !!user,
     register,

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Hero from "@/components/Hero";
 import FeaturedProducts from "@/components/FeaturedProducts";
@@ -6,6 +6,8 @@ import TrendingCollections from "@/components/TrendingCollections";
 import AboutSection from "@/components/AboutSection";
 import SmartFeatures from "@/components/SmartFeatures";
 import Testimonials from "@/components/Testimonials";
+import { useAuth } from "@/hooks/useAuth";
+import { useMode } from "@/hooks/useMode";
 
 /**
  * Home Page - L'ÉLÉGANCE Fashion Boutique Homepage
@@ -18,6 +20,25 @@ export default function Home() {
 
   // Navigation hook for routing
   const navigate = useNavigate();
+  
+  // Auth and mode hooks for protection
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { hasSelectedMode, isLoading: modeLoading } = useMode();
+
+  // Redirect if not authenticated or no mode selected
+  useEffect(() => {
+    if (modeLoading || authLoading) return;
+    
+    if (!hasSelectedMode) {
+      navigate("/mode-selection", { replace: true });
+      return;
+    }
+    
+    if (!isAuthenticated) {
+      navigate("/shopping-login", { replace: true });
+      return;
+    }
+  }, [isAuthenticated, hasSelectedMode, modeLoading, authLoading, navigate]);
 
   /**
    * Scroll to featured products section
@@ -34,6 +55,20 @@ export default function Home() {
   const handleShopNow = () => {
     navigate("/products");
   };
+
+  // Show loading while checking auth status
+  if (modeLoading || authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-accent/20 border-t-accent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!isAuthenticated || !hasSelectedMode) {
+    return null;
+  }
 
   return (
     <>

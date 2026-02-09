@@ -49,18 +49,24 @@ export default function Cart() {
                     key={item.id}
                     className="flex gap-6 border-b pb-6 hover:bg-muted/50 p-4 rounded-lg transition-colors"
                   >
-                    {/* Product Image */}
-                    <div className="w-24 h-24 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
+                    {/* Product Image - Clickable */}
+                    <div
+                      className="w-24 h-24 flex-shrink-0 bg-muted rounded-lg overflow-hidden cursor-pointer"
+                      onClick={() => navigate(`/products/${item.id}`)}
+                    >
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform"
                       />
                     </div>
 
                     {/* Product Details */}
                     <div className="flex-grow">
-                      <h3 className="text-lg font-semibold mb-2">
+                      <h3
+                        className="text-lg font-semibold mb-2 cursor-pointer hover:text-rose-500 transition-colors"
+                        onClick={() => navigate(`/products/${item.id}`)}
+                      >
                         {item.name}
                       </h3>
                       <p className="text-accent text-lg font-medium mb-4">

@@ -1,16 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Search, Menu, X, LogOut, User } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, LogOut, User, Building2, ShoppingBag as ShoppingMode, RefreshCw, Settings, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useMode } from "@/hooks/useMode";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { cartItemCount } = useCart();
   const { user, logout } = useAuth();
+  const { mode, clearMode, isEnterpriseMode, isShoppingMode, hasSelectedMode } = useMode();
   const navigate = useNavigate();
+
+  /**
+   * Scroll to top of page
+   */
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  /**
+   * Handle navigation with scroll to top
+   */
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
 
   /**
    * Handle logout
@@ -19,6 +36,18 @@ export default function Header() {
     logout();
     setShowUserMenu(false);
     navigate("/");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  /**
+   * Handle mode switch - clears mode and redirects to mode selection
+   */
+  const handleSwitchMode = () => {
+    clearMode();
+    logout();
+    setShowUserMenu(false);
+    navigate("/");
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   return (
@@ -33,36 +62,52 @@ export default function Header() {
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Brand Name */}
-        <Link to="/home" className="text-2xl font-serif font-bold tracking-tighter">
-          L'ÉLÉGANCE
-        </Link>
+        {/* Brand Name & Mode Badge */}
+        <div className="flex items-center gap-3">
+          <Link to="/home" onClick={scrollToTop} className="text-2xl font-serif font-bold tracking-tighter">
+            L'ÉLÉGANCE
+          </Link>
+          
+          {/* Mode Badge */}
+          {hasSelectedMode && (
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20">
+              {isEnterpriseMode ? (
+                <>
+                  <Building2 size={14} className="text-accent" />
+                  <span className="text-xs font-medium text-accent">Enterprise</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingMode size={14} className="text-accent" />
+                  <span className="text-xs font-medium text-accent">Shopping</span>
+                </>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-8">
           <Link
             to="/home"
+            onClick={scrollToTop}
             className="text-sm font-medium uppercase tracking-widest hover:text-accent transition-colors"
           >
             Home
           </Link>
           <Link
             to="/products"
+            onClick={scrollToTop}
             className="text-sm font-medium uppercase tracking-widest hover:text-accent transition-colors"
           >
             Products
           </Link>
           <Link
             to="/dashboard"
+            onClick={scrollToTop}
             className="text-sm font-medium uppercase tracking-widest hover:text-accent transition-colors"
           >
             Dashboard
-          </Link>
-          <Link
-            to="/contact"
-            className="text-sm font-medium uppercase tracking-widest hover:text-accent transition-colors"
-          >
-            Contact
           </Link>
         </nav>
 
@@ -76,6 +121,7 @@ export default function Header() {
           </button>
           <Link
             to="/cart"
+            onClick={scrollToTop}
             aria-label="Cart"
             className="hover:text-accent transition-colors relative"
           >
@@ -88,30 +134,33 @@ export default function Header() {
           </Link>
 
           {/* User Menu */}
-          {user ? (
+          {user && (
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="hover:text-accent transition-colors p-1.5 hover:bg-muted rounded"
+                className="flex items-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent/20 rounded-lg transition-colors"
                 aria-label="User menu"
               >
-                <User size={20} />
+                <User size={18} />
+                <span className="text-sm font-medium hidden sm:inline">Account</span>
+                <ChevronDown size={16} className={`transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Dropdown Menu */}
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-background border rounded-lg shadow-lg z-40">
+                <div className="absolute right-0 mt-2 w-56 bg-background border rounded-lg shadow-lg z-40">
                   <div className="p-4 border-b">
                     <p className="text-sm font-medium">{user.name}</p>
                     <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                   <div className="p-2 space-y-1">
                     <Link
-                      to="/dashboard"
-                      onClick={() => setShowUserMenu(false)}
-                      className="block px-3 py-2 text-sm hover:bg-muted rounded transition-colors"
+                      to="/settings"
+                      onClick={() => { setShowUserMenu(false); scrollToTop(); }}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-muted rounded transition-colors flex items-center gap-2"
                     >
-                      Dashboard
+                      <Settings size={16} />
+                      Settings
                     </Link>
                     <button
                       onClick={handleLogout}
@@ -124,24 +173,6 @@ export default function Header() {
                 </div>
               )}
             </div>
-          ) : (
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/login")}
-                className="text-xs font-semibold"
-              >
-                Login
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => navigate("/register")}
-                className="text-xs font-semibold rounded-none h-8"
-              >
-                Sign Up
-              </Button>
-            </div>
           )}
         </div>
       </div>
@@ -151,14 +182,14 @@ export default function Header() {
         <div className="lg:hidden bg-background border-b absolute top-20 left-0 right-0 py-8 px-4 flex flex-col space-y-6">
           <Link
             to="/home"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
             className="text-lg font-medium uppercase tracking-widest"
           >
             Home
           </Link>
           <Link
             to="/products"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
             className="text-lg font-medium uppercase tracking-widest"
           >
             Products
@@ -168,7 +199,7 @@ export default function Header() {
             <>
               <Link
                 to="/dashboard"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
                 className="text-lg font-medium uppercase tracking-widest"
               >
                 Dashboard
@@ -178,7 +209,7 @@ export default function Header() {
 
           <Link
             to="/cart"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
             className="text-lg font-medium uppercase tracking-widest flex items-center gap-2"
           >
             Cart
@@ -191,56 +222,43 @@ export default function Header() {
 
           <Link
             to="/contact"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
             className="text-lg font-medium uppercase tracking-widest"
           >
             Contact
           </Link>
 
           {/* Auth Links in Mobile */}
-          <div className="border-t pt-6 space-y-4">
-            {user ? (
-              <>
-                <div className="text-sm">
-                  <p className="font-medium">{user.name}</p>
-                  <p className="text-muted-foreground text-xs">{user.email}</p>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-none"
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  <LogOut size={16} className="mr-2" />
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-none"
-                  onClick={() => {
-                    navigate("/login");
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  className="w-full rounded-none"
-                  onClick={() => {
-                    navigate("/register");
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  Create Account
-                </Button>
-              </>
-            )}
-          </div>
+          {user && (
+            <div className="border-t pt-6 space-y-4">
+              <div className="text-sm">
+                <p className="font-medium">{user.name}</p>
+                <p className="text-muted-foreground text-xs">{user.email}</p>
+              </div>
+              <Button
+                variant="outline"
+                className="w-full rounded-none"
+                onClick={() => {
+                  handleSwitchMode();
+                  setIsMenuOpen(false);
+                }}
+              >
+                <RefreshCw size={16} className="mr-2" />
+                Switch Mode
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full rounded-none"
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+              >
+                <LogOut size={16} className="mr-2" />
+                Logout
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </header>

@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Star } from "lucide-react";
+import { products } from "@/data/products";
 
 /**
  * Products Page
@@ -12,52 +13,6 @@ export default function Products() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [addedItems, setAddedItems] = useState<number[]>([]);
-
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: "Classic White Blazer",
-      price: "$299.00",
-      image:
-        "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 2,
-      name: "Designer Jeans",
-      price: "$199.00",
-      image:
-        "https://images.unsplash.com/photo-1542272604-787c62d465d1?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 3,
-      name: "Silk Evening Gown",
-      price: "$599.00",
-      image:
-        "https://images.unsplash.com/photo-1595777707802-18b27be3c3ce?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 4,
-      name: "Leather Handbag",
-      price: "$399.00",
-      image:
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 5,
-      name: "Gold Heels",
-      price: "$249.00",
-      image:
-        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=1000&auto=format&fit=crop",
-    },
-    {
-      id: 6,
-      name: "Pearl Necklace",
-      price: "$179.00",
-      image:
-        "https://images.unsplash.com/photo-1599643478185-b0f29208617b?q=80&w=1000&auto=format&fit=crop",
-    },
-  ];
 
   /**
    * Handle Add to Cart click
@@ -97,33 +52,77 @@ export default function Products() {
           {products.map((product) => (
             <div
               key={product.id}
-              className="group cursor-pointer transition-transform duration-300 hover:scale-105"
+              className="group cursor-pointer transition-all duration-300 hover:shadow-xl rounded-lg overflow-hidden bg-card"
             >
-              <div className="overflow-hidden bg-muted rounded-lg mb-4 h-64">
+              {/* Clickable Image Area */}
+              <div
+                className="relative overflow-hidden bg-muted h-72"
+                onClick={() => navigate(`/products/${product.id}`)}
+              >
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
-              <p className="text-accent text-lg font-medium mb-4">
-                {product.price}
-              </p>
-              <Button
-                variant={addedItems.includes(product.id) ? "default" : "outline"}
-                className="w-full rounded-none transition-all"
-                onClick={() => handleAddToCart(product)}
-              >
-                {addedItems.includes(product.id) ? (
-                  <>
-                    <ShoppingBag size={18} className="mr-2" />
-                    Added to Cart!
-                  </>
-                ) : (
-                  "Add to Cart"
+                {/* Discount Badge */}
+                {product.discount && (
+                  <div className="absolute top-3 left-3 bg-rose-500 text-white px-2 py-1 text-xs font-semibold rounded">
+                    {product.discount}
+                  </div>
                 )}
-              </Button>
+              </div>
+
+              {/* Product Info */}
+              <div className="p-4">
+                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-1">
+                  {product.brand}
+                </p>
+                <h3
+                  className="text-lg font-semibold mb-2 hover:text-rose-500 transition-colors cursor-pointer truncate"
+                  onClick={() => navigate(`/products/${product.id}`)}
+                >
+                  {product.name}
+                </h3>
+
+                {/* Rating */}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-1 bg-green-600 text-white px-1.5 py-0.5 rounded text-xs font-semibold">
+                    {product.rating}
+                    <Star size={10} fill="currentColor" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    ({product.reviews})
+                  </span>
+                </div>
+
+                {/* Price */}
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-lg font-bold">{product.price}</span>
+                  {product.originalPrice && (
+                    <span className="text-sm text-muted-foreground line-through">
+                      {product.originalPrice}
+                    </span>
+                  )}
+                </div>
+
+                <Button
+                  variant={addedItems.includes(product.id) ? "default" : "outline"}
+                  className="w-full transition-all"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
+                >
+                  {addedItems.includes(product.id) ? (
+                    <>
+                      <ShoppingBag size={18} className="mr-2" />
+                      Added to Cart!
+                    </>
+                  ) : (
+                    "Add to Bag"
+                  )}
+                </Button>
+              </div>
             </div>
           ))}
         </div>
