@@ -154,6 +154,10 @@ export function useAuth() {
    */
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("auth_user");
+    setHasLoaded(false); // Force update
+    setTimeout(() => setHasLoaded(true), 0);
+    // Optionally clear other auth state here
   };
 
   /**

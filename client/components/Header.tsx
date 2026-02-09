@@ -35,7 +35,7 @@ export default function Header() {
   const handleLogout = () => {
     logout();
     setShowUserMenu(false);
-    navigate("/");
+    navigate("/"); // Redirect to mode selection
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 

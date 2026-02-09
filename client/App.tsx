@@ -1,10 +1,11 @@
+import React from "react";
 import "./global.css";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -26,16 +27,25 @@ const queryClient = new QueryClient();
  */
 function AppLayout() {
   const { isAuthenticated, isLoading: authLoading, user } = useAuth();
+  const navigate = useNavigate();
+  // Always redirect to ModeSelection on revisit (reload)
+  React.useEffect(() => {
+    navigate('/');
+  }, []);
 
   // Show header/footer when user is authenticated
-  const shouldShowHeader = isAuthenticated && !authLoading;
-  const shouldShowFooter = isAuthenticated && !authLoading;
+  const location = useLocation();
+  const isModeSelection = location.pathname === '/';
+  const isShoppingLogin = location.pathname === '/shopping-login';
+  const hideHeaderFooter = isModeSelection || isShoppingLogin;
+  const shouldShowHeader = !hideHeaderFooter && isAuthenticated && !authLoading && user;
+  const shouldShowFooter = !hideHeaderFooter && isAuthenticated && !authLoading;
 
   // Debug output
   // Remove this after debugging
   const debug = (
     <div style={{ background: '#fee', color: '#900', padding: 8, fontSize: 12 }}>
-      <strong>DEBUG:</strong> isAuthenticated: {String(isAuthenticated)} | authLoading: {String(authLoading)} | user: {user ? JSON.stringify(user) : 'null'}
+
     </div>
   );
 

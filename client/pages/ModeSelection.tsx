@@ -1,7 +1,9 @@
+
 import { useNavigate } from "react-router-dom";
 import { Building2, ShoppingBag, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMode, AppMode } from "@/hooks/useMode";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * Mode Selection Page
@@ -11,12 +13,13 @@ import { useMode, AppMode } from "@/hooks/useMode";
 export default function ModeSelection() {
   const navigate = useNavigate();
   const { setMode } = useMode();
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth();
 
   const handleModeSelect = (selectedMode: AppMode) => {
     setMode(selectedMode);
     if (selectedMode === "shopping") {
       navigate("/shopping-login");
-    } else if (selectedMode === "enterprise") {
+  const { isAuthenticated, isLoading: authLoading, user } = useAuth();
       // Enterprise mode can navigate to a different login or dashboard
       navigate("/shopping-login"); // Using same login for now
     }
@@ -25,17 +28,27 @@ export default function ModeSelection() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/5 flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-12 mt-8">
+        {/* Main Title: Always show L'ÉLÉGANCE */}
+        <div className="text-center mb-10 mt-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="w-8 h-8 text-accent" />
             <h1 className="text-5xl font-serif font-bold tracking-tight">L'ÉLÉGANCE</h1>
             <Sparkles className="w-8 h-8 text-accent" />
           </div>
-          <p className="text-xl text-muted-foreground max-w-lg mx-auto">
-            Welcome to our exclusive fashion experience. How would you like to explore today?
-          </p>
         </div>
+        {/* Header: Only show if authenticated */}
+        {isAuthenticated && !authLoading && user && (
+          <div className="text-center mb-12 mt-8">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <Sparkles className="w-8 h-8 text-accent" />
+              <h1 className="text-5xl font-serif font-bold tracking-tight">L'ÉLÉGANCE</h1>
+              <Sparkles className="w-8 h-8 text-accent" />
+            </div>
+            <p className="text-xl text-muted-foreground max-w-lg mx-auto">
+              Welcome to our exclusive fashion experience. How would you like to explore today?
+            </p>
+          </div>
+        )}
 
         {/* Mode Selection Cards */}
         <div className="grid md:grid-cols-2 gap-8">

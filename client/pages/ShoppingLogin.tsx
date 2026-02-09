@@ -94,7 +94,7 @@ export default function ShoppingLogin() {
    */
   const handleBackToModeSelection = () => {
     clearMode();
-    navigate("/mode-selection");
+    navigate("/");
   };
 
   return (
