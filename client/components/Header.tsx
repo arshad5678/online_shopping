@@ -10,7 +10,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { cartItemCount } = useCart();
-  const { user, logout } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const { mode, clearMode, isEnterpriseMode, isShoppingMode, hasSelectedMode } = useMode();
   const navigate = useNavigate();
 
@@ -133,8 +133,17 @@ export default function Header() {
             )}
           </Link>
 
-          {/* User Menu */}
-          {user && (
+          {/* User Menu or Login Button */}
+          {isShoppingMode && !isAuthenticated && (
+            <Button
+              variant="outline"
+              onClick={() => navigate("/shopping-login")}
+              className="rounded-none"
+            >
+              Login
+            </Button>
+          )}
+          {isAuthenticated && user && (
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}

@@ -18,10 +18,10 @@ export default function ModeSelection() {
   const handleModeSelect = (selectedMode: AppMode) => {
     setMode(selectedMode);
     if (selectedMode === "shopping") {
-      navigate("/shopping-login");
-  const { isAuthenticated, isLoading: authLoading, user } = useAuth();
+      navigate("/home", { replace: true });
+    } else {
       // Enterprise mode can navigate to a different login or dashboard
-      navigate("/shopping-login"); // Using same login for now
+      navigate("/shopping-login", { replace: true }); // Using same login for now
     }
   };
 

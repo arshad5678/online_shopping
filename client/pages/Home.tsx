@@ -28,16 +28,11 @@ export default function Home() {
   // Redirect if not authenticated or no mode selected
   useEffect(() => {
     if (modeLoading || authLoading) return;
-    
     if (!hasSelectedMode) {
       navigate("/mode-selection", { replace: true });
       return;
     }
-    
-    if (!isAuthenticated) {
-      navigate("/shopping-login", { replace: true });
-      return;
-    }
+    // Do not redirect to /shopping-login if not authenticated; stay on /home
   }, [isAuthenticated, hasSelectedMode, modeLoading, authLoading, navigate]);
 
   /**
@@ -65,8 +60,8 @@ export default function Home() {
     );
   }
 
-  // Don't render if not authenticated (will redirect)
-  if (!isAuthenticated || !hasSelectedMode) {
+  // Don't render if mode is not selected
+  if (!hasSelectedMode) {
     return null;
   }
 
