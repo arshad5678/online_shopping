@@ -74,7 +74,6 @@ function AppLayout() {
           {/* Cart Route */}
           <Route path="/cart" element={<Cart />} />
 
-          {/* Settings Route */}
           <Route path="/settings" element={<Settings />} />
 
           {/* Not Found Route */}

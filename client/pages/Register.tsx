@@ -206,22 +206,7 @@ export default function Register() {
           By signing up, you agree to our Terms of Service and Privacy Policy
         </p>
 
-        {/* Login Link */}
-        <p className="text-center text-muted-foreground mt-6">
-          Already have an account?{" "}
-          <Link to="/login" className="text-accent hover:text-accent/80 font-medium">
-            Sign in
-          </Link>
-        </p>
-
-        {/* Back to Home */}
-        <button
-          type="button"
-          onClick={() => navigate("/")}
-          className="w-full mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          ← Back to Login
-        </button>
+        {/* Login Link and Back to Login removed */}
       </div>
     </div>
   );

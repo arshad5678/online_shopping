@@ -120,34 +120,6 @@ export function useAuth() {
     return newUser;
   };
 
-  /**
-   * Login user with email and password
-   */
-  const login = (email: string, password: string) => {
-    // In a real app, you'd send this to a backend
-    const users = JSON.parse(localStorage.getItem("all_users") || "[]");
-    
-    // Trim inputs and find user
-    const trimmedEmail = email.trim().toLowerCase();
-    const trimmedPassword = password.trim();
-    
-    const foundUser = users.find(
-      (u: any) =>
-        u.email.toLowerCase() === trimmedEmail &&
-        u.password === trimmedPassword
-    );
-
-    if (!foundUser) {
-      // Debug: Show what we're looking for
-      console.log("Login failed. Looking for:", { email: trimmedEmail, password: trimmedPassword });
-      console.log("Available users:", users.map((u: any) => ({ email: u.email, password: u.password })));
-      throw new Error("Invalid email or password");
-    }
-
-    const { password: _, ...userWithoutPassword } = foundUser;
-    setUser(userWithoutPassword);
-    return userWithoutPassword;
-  };
 
   /**
    * Logout current user
@@ -178,7 +150,7 @@ export function useAuth() {
     isLoading,
     isAuthenticated: !!user,
     register,
-    login,
+    // login removed
     logout,
     updateProfile,
   };

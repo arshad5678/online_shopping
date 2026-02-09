@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 /**
  * ProtectedRoute Component
  * Prevents unauthorized users from accessing protected pages
- * Redirects to login if user is not authenticated
+ * Redirects to shopping-login if user is not authenticated
  */
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -26,9 +26,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  // Redirect to login if not authenticated
+  // Redirect to shopping-login if not authenticated
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/shopping-login" replace />;
   }
 
   // User is authenticated, render the component

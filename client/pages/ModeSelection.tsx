@@ -36,14 +36,9 @@ export default function ModeSelection() {
             <Sparkles className="w-8 h-8 text-accent" />
           </div>
         </div>
-        {/* Header: Only show if authenticated */}
+        {/* Header: Only show welcome message if authenticated */}
         {isAuthenticated && !authLoading && user && (
           <div className="text-center mb-12 mt-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="w-8 h-8 text-accent" />
-              <h1 className="text-5xl font-serif font-bold tracking-tight">L'ÉLÉGANCE</h1>
-              <Sparkles className="w-8 h-8 text-accent" />
-            </div>
             <p className="text-xl text-muted-foreground max-w-lg mx-auto">
               Welcome to our exclusive fashion experience. How would you like to explore today?
             </p>
