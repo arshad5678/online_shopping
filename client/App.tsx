@@ -27,11 +27,7 @@ const queryClient = new QueryClient();
  */
 function AppLayout() {
   const { isAuthenticated, isLoading: authLoading, user } = useAuth();
-  const navigate = useNavigate();
-  // Always redirect to ModeSelection on revisit (reload)
-  React.useEffect(() => {
-    navigate('/');
-  }, []);
+  // Removed forced redirect to ModeSelection on reload
 
   // Show header/footer when user is authenticated
   const location = useLocation();
