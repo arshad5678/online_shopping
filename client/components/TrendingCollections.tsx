@@ -24,6 +24,13 @@ const COLLECTIONS = [
       "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop",
     tag: "Exclusives",
   },
+  {
+    title: "Diamond & Gold",
+    description: "Timeless elegance with our premium jewelry selection.",
+    image:
+      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1000&auto=format&fit=crop",
+    tag: "Luxury",
+  },
 ];
 
 export default function TrendingCollections() {
@@ -78,6 +85,7 @@ export default function TrendingCollections() {
                   <Button
                     variant="outline"
                     className="text-white border-white hover:bg-white hover:text-black rounded-none text-[10px] font-bold uppercase tracking-widest px-6 h-10 transition-colors"
+                    onClick={() => window.location.href = '/products'}
                   >
                     Shop Collection
                   </Button>

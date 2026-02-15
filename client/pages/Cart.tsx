@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/hooks/useCart";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 
 /**
  * Shopping Cart Page
@@ -9,10 +12,64 @@ import { Trash2 } from "lucide-react";
  */
 export default function Cart() {
   const navigate = useNavigate();
-  const { cart, removeFromCart, updateQuantity, getTotal, clearCart } =
-    useCart();
+  const { cart, removeFromCart, updateQuantity, getTotal, clearCart } = useCart();
+  const { user, isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const total = getTotal();
+  const tax = total * 0.1;
+  const grandTotal = total + tax; // Shipping is free
+
+  const handleCheckout = async () => {
+    if (!isAuthenticated || !user) {
+      toast({
+        title: "Please login",
+        description: "You need to be logged in to place an order.",
+        variant: "destructive",
+      });
+      navigate("/shopping-login");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          items: cart,
+          totalAmount: grandTotal,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to place order");
+      }
+
+      await response.json();
+
+      clearCart();
+      toast({
+        title: "Order placed successfully!",
+        description: "Thank you for your purchase.",
+      });
+      navigate("/orders");
+    } catch (error) {
+      console.error("Checkout error:", error);
+      toast({
+        title: "Checkout failed",
+        description: "There was a problem placing your order. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -157,22 +214,30 @@ export default function Cart() {
                 <div className="flex justify-between mb-6 pb-6 border-b">
                   <span className="text-muted-foreground">Tax</span>
                   <span className="font-medium">
-                    ${(total * 0.1).toFixed(2)}
+                    ${tax.toFixed(2)}
                   </span>
                 </div>
 
                 {/* Total */}
                 <div className="flex justify-between mb-6 text-xl font-bold">
                   <span>Total</span>
-                  <span>${(total * 1.1).toFixed(2)}</span>
+                  <span>${grandTotal.toFixed(2)}</span>
                 </div>
 
                 {/* Checkout Button */}
                 <Button
                   className="w-full rounded-none mb-3 h-12"
-                  onClick={() => alert("Checkout coming soon!")}
+                  onClick={handleCheckout}
+                  disabled={isSubmitting}
                 >
-                  Proceed to Checkout
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    "Place Order"
+                  )}
                 </Button>
 
                 {/* Clear Cart Button */}
@@ -180,6 +245,7 @@ export default function Cart() {
                   variant="outline"
                   className="w-full rounded-none"
                   onClick={clearCart}
+                  disabled={isSubmitting}
                 >
                   Clear Cart
                 </Button>

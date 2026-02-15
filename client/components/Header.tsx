@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Search, Menu, X, LogOut, User, Building2, ShoppingBag as ShoppingMode, RefreshCw, Settings, ChevronDown } from "lucide-react";
+import { ShoppingBag, Search, Menu, X, LogOut, User, Building2, ShoppingBag as ShoppingMode, RefreshCw, Settings, ChevronDown, Package } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
@@ -67,7 +67,7 @@ export default function Header() {
           <Link to="/home" onClick={scrollToTop} className="text-2xl font-serif font-bold tracking-tighter">
             L'ÉLÉGANCE
           </Link>
-          
+
           {/* Mode Badge */}
           {hasSelectedMode && (
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20">
@@ -133,6 +133,19 @@ export default function Header() {
             )}
           </Link>
 
+          {/* Orders Link - Visible when logged in */}
+          {isAuthenticated && (
+            <Link
+              to="/orders"
+              onClick={scrollToTop}
+              aria-label="My Orders"
+              className="hover:text-accent transition-colors"
+              title="My Orders"
+            >
+              <Package size={20} />
+            </Link>
+          )}
+
           {/* User Menu or Login Button */}
           {isShoppingMode && !isAuthenticated && (
             <Button
@@ -163,6 +176,14 @@ export default function Header() {
                     <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                   <div className="p-2 space-y-1">
+                    <Link
+                      to="/orders"
+                      onClick={() => { setShowUserMenu(false); scrollToTop(); }}
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-muted rounded transition-colors flex items-center gap-2"
+                    >
+                      <ShoppingBag size={16} />
+                      My Orders
+                    </Link>
                     <Link
                       to="/settings"
                       onClick={() => { setShowUserMenu(false); scrollToTop(); }}
@@ -212,6 +233,13 @@ export default function Header() {
                 className="text-lg font-medium uppercase tracking-widest"
               >
                 Dashboard
+              </Link>
+              <Link
+                to="/orders"
+                onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
+                className="text-lg font-medium uppercase tracking-widest"
+              >
+                My Orders
               </Link>
             </>
           )}

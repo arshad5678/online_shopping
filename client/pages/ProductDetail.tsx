@@ -156,11 +156,10 @@ export default function ProductDetail() {
               <div className="absolute top-4 right-4 flex flex-col gap-2">
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors ${
-                    isWishlisted
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-colors ${isWishlisted
                       ? "bg-rose-500 text-white"
                       : "bg-white/90 text-gray-600 hover:bg-white"
-                  }`}
+                    }`}
                 >
                   <Heart size={20} fill={isWishlisted ? "currentColor" : "none"} />
                 </button>
@@ -177,11 +176,10 @@ export default function ProductDetail() {
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-20 h-24 rounded-md overflow-hidden border-2 transition-colors ${
-                      selectedImageIndex === index
+                    className={`flex-shrink-0 w-20 h-24 rounded-md overflow-hidden border-2 transition-colors ${selectedImageIndex === index
                         ? "border-primary"
                         : "border-transparent hover:border-muted-foreground/30"
-                    }`}
+                      }`}
                   >
                     <img
                       src={img}
@@ -250,22 +248,20 @@ export default function ProductDetail() {
                     <button
                       key={color.name}
                       onClick={() => setSelectedColor(color.name)}
-                      className={`w-10 h-10 rounded-full border-2 transition-all ${
-                        selectedColor === color.name
+                      className={`w-10 h-10 rounded-full border-2 transition-all ${selectedColor === color.name
                           ? "border-primary scale-110"
                           : "border-gray-200 hover:scale-105"
-                      }`}
+                        }`}
                       style={{ backgroundColor: color.hex }}
                       title={color.name}
                     >
                       {selectedColor === color.name && (
                         <Check
                           size={16}
-                          className={`mx-auto ${
-                            color.hex === "#FFFFFF" || color.hex === "#FFFAF0" || color.hex === "#FFFDD0"
+                          className={`mx-auto ${color.hex === "#FFFFFF" || color.hex === "#FFFAF0" || color.hex === "#FFFDD0"
                               ? "text-gray-800"
                               : "text-white"
-                          }`}
+                            }`}
                         />
                       )}
                     </button>
@@ -288,11 +284,10 @@ export default function ProductDetail() {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`min-w-[50px] h-12 px-4 rounded-md border-2 font-medium transition-all ${
-                        selectedSize === size
+                      className={`min-w-[50px] h-12 px-4 rounded-md border-2 font-medium transition-all ${selectedSize === size
                           ? "border-primary bg-primary/5 text-primary"
                           : "border-gray-200 hover:border-primary/50"
-                      }`}
+                        }`}
                     >
                       {size}
                     </button>
