@@ -49,7 +49,7 @@ export default function ShoppingLogin() {
       initializeGoogle("google-signin-button", () => {
         navigate("/home");
       });
-      
+
       // Check when button is ready
       const checkButton = setInterval(() => {
         const button = document.querySelector('#google-signin-button iframe, #google-signin-button button');
@@ -58,7 +58,7 @@ export default function ShoppingLogin() {
           clearInterval(checkButton);
         }
       }, 100);
-      
+
       // Cleanup
       return () => clearInterval(checkButton);
     }
@@ -71,14 +71,14 @@ export default function ShoppingLogin() {
   const handleGoogleSignIn = () => {
     if (isGoogleAvailable && googleButtonReady) {
       // Click the actual Google button
-      const googleButton = document.querySelector('#google-signin-button div[role="button"]') as HTMLElement 
+      const googleButton = document.querySelector('#google-signin-button div[role="button"]') as HTMLElement
         || document.querySelector('#google-signin-button iframe') as HTMLIFrameElement;
       if (googleButton) {
         googleButton.click();
         return;
       }
     }
-    
+
     // Fallback to demo mode
     setIsLoading(true);
     setTimeout(() => {
@@ -125,12 +125,12 @@ export default function ShoppingLogin() {
           {/* Google Sign-In Button */}
           <div className="space-y-4">
             {/* Real Google Button (rendered by Google Identity Services) */}
-            <div 
-              id="google-signin-button" 
+            <div
+              id="google-signin-button"
               ref={googleButtonRef}
               className="w-full flex justify-center min-h-[50px]"
             />
-            
+
             {/* Fallback button when Google button is not ready */}
             {!googleButtonReady && (
               <Button
@@ -141,9 +141,37 @@ export default function ShoppingLogin() {
                 disabled={isLoading}
               >
                 <GoogleIcon className="w-6 h-6" />
-                <span className="text-base">{isLoading ? "Signing in..." : "Sign in with Google"}</span>
+                <span className="text-base">{isLoading ? "Signing in..." : "Google"}</span>
               </Button>
             )}
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full h-12 rounded-xl font-medium"
+              onClick={() => {
+                setIsLoading(true);
+                // Simulate network delay
+                setTimeout(() => {
+                  demoGoogleSignIn(() => {
+                    navigate("/home");
+                  });
+                  setIsLoading(false);
+                }, 500);
+              }}
+              disabled={isLoading}
+            >
+              Sign in with Demo Account
+            </Button>
           </div>
 
           {/* Features */}

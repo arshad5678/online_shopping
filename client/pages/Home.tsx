@@ -8,6 +8,7 @@ import SmartFeatures from "@/components/SmartFeatures";
 import Testimonials from "@/components/Testimonials";
 import { useAuth } from "@/hooks/useAuth";
 import { useMode } from "@/hooks/useMode";
+import { motion } from "framer-motion";
 
 /**
  * Home Page - L'ÉLÉGANCE Fashion Boutique Homepage
@@ -20,7 +21,7 @@ export default function Home() {
 
   // Navigation hook for routing
   const navigate = useNavigate();
-  
+
   // Auth and mode hooks for protection
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { hasSelectedMode, isLoading: modeLoading } = useMode();
@@ -65,6 +66,15 @@ export default function Home() {
     return null;
   }
 
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8 }
+    }
+  };
+
   return (
     <>
       {/* 1. Hero Section: Large banner with stylish models and brand call to actions */}
@@ -79,16 +89,44 @@ export default function Home() {
       </div>
 
       {/* 3. Trending Collections Section: Seasonal outfits with modern hover effects */}
-      <TrendingCollections />
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
+        <TrendingCollections />
+      </motion.div>
 
       {/* 4. About the Boutique Section: Narrative describing the blend of style and digital tech */}
-      <AboutSection />
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
+        <AboutSection />
+      </motion.div>
 
       {/* 5. Smart Features Highlight Section: Showcasing AI and digital innovation in fashion */}
-      <SmartFeatures />
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
+        <SmartFeatures />
+      </motion.div>
 
       {/* 6. Customer Testimonials Section: Reviews from our elegant community */}
-      <Testimonials />
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={sectionVariants}
+      >
+        <Testimonials />
+      </motion.div>
     </>
   );
 }

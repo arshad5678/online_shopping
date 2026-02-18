@@ -1,17 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingBag, Search, Menu, X, LogOut, User, Building2, ShoppingBag as ShoppingMode, RefreshCw, Settings, ChevronDown, Package } from "lucide-react";
+import { ShoppingBag, Search, Menu, LogOut, User, Building2, ShoppingBag as ShoppingMode, RefreshCw, Settings, ChevronDown, Package } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useMode } from "@/hooks/useMode";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose
+} from "@/components/ui/sheet";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { cartItemCount } = useCart();
   const { user, logout, isAuthenticated } = useAuth();
-  const { mode, clearMode, isEnterpriseMode, isShoppingMode, hasSelectedMode } = useMode();
+  const { clearMode, isEnterpriseMode, isShoppingMode, hasSelectedMode } = useMode();
   const navigate = useNavigate();
 
   /**
@@ -53,37 +60,204 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
 
-        {/* Brand Name & Mode Badge */}
-        <div className="flex items-center gap-3">
-          <Link to="/home" onClick={scrollToTop} className="text-2xl font-serif font-bold tracking-tighter">
-            L'ÉLÉGANCE
-          </Link>
+        {/* Left Side: Hamburger & Brand */}
+        <div className="flex items-center gap-4">
+          {/* Hamburger Menu (Sidebar Trigger) */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <button
+                className="p-2 hover:bg-accent/10 rounded-full transition-colors"
+                aria-label="Open menu"
+              >
+                <Menu size={24} />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[350px] overflow-y-auto">
+              <SheetHeader className="mb-6 text-left">
+                <SheetTitle className="text-2xl font-serif font-bold tracking-tighter">
+                  L'ÉLÉGANCE
+                </SheetTitle>
+              </SheetHeader>
 
-          {/* Mode Badge */}
-          {hasSelectedMode && (
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20">
-              {isEnterpriseMode ? (
-                <>
-                  <Building2 size={14} className="text-accent" />
-                  <span className="text-xs font-medium text-accent">Enterprise</span>
-                </>
-              ) : (
-                <>
-                  <ShoppingMode size={14} className="text-accent" />
-                  <span className="text-xs font-medium text-accent">Shopping</span>
-                </>
-              )}
-            </div>
-          )}
+              <div className="flex flex-col space-y-6">
+                {/* Main Categories */}
+                <div className="flex flex-col space-y-4">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Categories
+                  </h3>
+                  <div className="flex flex-col space-y-2">
+                    <SheetClose asChild>
+                      <Link
+                        to="/category/men"
+                        onClick={scrollToTop}
+                        className="text-lg font-medium hover:text-accent transition-colors py-1"
+                      >
+                        Men
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        to="/category/women"
+                        onClick={scrollToTop}
+                        className="text-lg font-medium hover:text-accent transition-colors py-1"
+                      >
+                        Women
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        to="/category/kids"
+                        onClick={scrollToTop}
+                        className="text-lg font-medium hover:text-accent transition-colors py-1"
+                      >
+                        Kids
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link
+                        to="/discounts"
+                        onClick={scrollToTop}
+                        className="text-lg font-medium hover:text-accent transition-colors py-1 text-rose-500"
+                      >
+                        Discounts
+                      </Link>
+                    </SheetClose>
+                  </div>
+                </div>
+
+                {/* Account & Orders */}
+                <div className="flex flex-col space-y-4 pt-4 border-t">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    My Account
+                  </h3>
+                  <div className="flex flex-col space-y-2">
+                    {isAuthenticated ? (
+                      <>
+                        <SheetClose asChild>
+                          <Link
+                            to="/orders"
+                            onClick={scrollToTop}
+                            className="text-lg font-medium hover:text-accent transition-colors py-1 flex items-center gap-2"
+                          >
+                            <Package size={18} />
+                            Orders
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link
+                            to="/dashboard"
+                            onClick={scrollToTop}
+                            className="text-lg font-medium hover:text-accent transition-colors py-1"
+                          >
+                            Dashboard
+                          </Link>
+                        </SheetClose>
+                      </>
+                    ) : (
+                      <div className="pb-2">
+                        <p className="text-sm text-muted-foreground mb-2">Sign in to view orders</p>
+                        {isShoppingMode && (
+                          <SheetClose asChild>
+                            <Button
+                              variant="outline"
+                              onClick={() => navigate("/shopping-login")}
+                              className="w-full"
+                            >
+                              Login
+                            </Button>
+                          </SheetClose>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Navigation Links (Mobile Backup) */}
+                <div className="flex flex-col space-y-4 pt-4 border-t lg:hidden">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Menu
+                  </h3>
+                  <SheetClose asChild>
+                    <Link
+                      to="/home"
+                      onClick={scrollToTop}
+                      className="text-lg font-medium hover:text-accent transition-colors"
+                    >
+                      Home
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
+                    <Link
+                      to="/products"
+                      onClick={scrollToTop}
+                      className="text-lg font-medium hover:text-accent transition-colors"
+                    >
+                      All Products
+                    </Link>
+                  </SheetClose>
+                </div>
+
+                {/* Footer / User Info */}
+                {user && (
+                  <div className="mt-auto pt-6 border-t space-y-4">
+                    <div className="text-sm">
+                      <p className="font-medium">{user.name}</p>
+                      <p className="text-muted-foreground text-xs">{user.email}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <SheetClose asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={handleSwitchMode}
+                        >
+                          <RefreshCw size={14} className="mr-2" />
+                          Switch
+                        </Button>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="flex-1"
+                          onClick={handleLogout}
+                        >
+                          <LogOut size={14} className="mr-2" />
+                          Logout
+                        </Button>
+                      </SheetClose>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Brand Name & Mode Badge */}
+          <div className="flex items-center gap-3">
+            <Link to="/home" onClick={scrollToTop} className="text-2xl font-serif font-bold tracking-tighter">
+              L'ÉLÉGANCE
+            </Link>
+
+            {/* Mode Badge */}
+            {hasSelectedMode && (
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20">
+                {isEnterpriseMode ? (
+                  <>
+                    <Building2 size={14} className="text-accent" />
+                    <span className="text-xs font-medium text-accent">Enterprise</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingMode size={14} className="text-accent" />
+                    <span className="text-xs font-medium text-accent">Shopping</span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -151,7 +325,7 @@ export default function Header() {
             <Button
               variant="outline"
               onClick={() => navigate("/shopping-login")}
-              className="rounded-none"
+              className="rounded-none hidden sm:flex"
             >
               Login
             </Button>
@@ -206,98 +380,6 @@ export default function Header() {
           )}
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="lg:hidden bg-background border-b absolute top-20 left-0 right-0 py-8 px-4 flex flex-col space-y-6">
-          <Link
-            to="/home"
-            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-            className="text-lg font-medium uppercase tracking-widest"
-          >
-            Home
-          </Link>
-          <Link
-            to="/products"
-            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-            className="text-lg font-medium uppercase tracking-widest"
-          >
-            Products
-          </Link>
-
-          {user && (
-            <>
-              <Link
-                to="/dashboard"
-                onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-                className="text-lg font-medium uppercase tracking-widest"
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/orders"
-                onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-                className="text-lg font-medium uppercase tracking-widest"
-              >
-                My Orders
-              </Link>
-            </>
-          )}
-
-          <Link
-            to="/cart"
-            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-            className="text-lg font-medium uppercase tracking-widest flex items-center gap-2"
-          >
-            Cart
-            {cartItemCount > 0 && (
-              <span className="bg-accent text-accent-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">
-                {cartItemCount}
-              </span>
-            )}
-          </Link>
-
-          <Link
-            to="/contact"
-            onClick={() => { setIsMenuOpen(false); scrollToTop(); }}
-            className="text-lg font-medium uppercase tracking-widest"
-          >
-            Contact
-          </Link>
-
-          {/* Auth Links in Mobile */}
-          {user && (
-            <div className="border-t pt-6 space-y-4">
-              <div className="text-sm">
-                <p className="font-medium">{user.name}</p>
-                <p className="text-muted-foreground text-xs">{user.email}</p>
-              </div>
-              <Button
-                variant="outline"
-                className="w-full rounded-none"
-                onClick={() => {
-                  handleSwitchMode();
-                  setIsMenuOpen(false);
-                }}
-              >
-                <RefreshCw size={16} className="mr-2" />
-                Switch Mode
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full rounded-none"
-                onClick={() => {
-                  handleLogout();
-                  setIsMenuOpen(false);
-                }}
-              >
-                <LogOut size={16} className="mr-2" />
-                Logout
-              </Button>
-            </div>
-          )}
-        </div>
-      )}
     </header>
   );
 }
