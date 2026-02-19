@@ -1,5 +1,6 @@
 import path from "path";
 import { createServer } from "./index";
+import { connectDB } from "./config/db";
 import * as express from "express";
 
 const app = createServer();
@@ -22,11 +23,14 @@ app.use((req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
-app.listen(port, () => {
-  console.log(`🚀 Fusion Starter server running on port ${port}`);
-  console.log(`📱 Frontend: http://localhost:${port}`);
-  console.log(`🔧 API: http://localhost:${port}/api`);
-});
+(async () => {
+  await connectDB();
+  app.listen(port, () => {
+    console.log(`🚀 Fusion Starter server running on port ${port}`);
+    console.log(`📱 Frontend: http://localhost:${port}`);
+    console.log(`🔧 API: http://localhost:${port}/api`);
+  });
+})();
 
 // Graceful shutdown
 process.on("SIGTERM", () => {
