@@ -21,54 +21,17 @@ export default function Cart() {
   const tax = total * 0.1;
   const grandTotal = total + tax; // Shipping is free
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (!isAuthenticated || !user) {
       toast({
         title: "Please login",
-        description: "You need to be logged in to place an order.",
+        description: "You need to be logged in to proceed to checkout.",
         variant: "destructive",
       });
       navigate("/shopping-login");
       return;
     }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch("/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          items: cart,
-          totalAmount: grandTotal,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to place order");
-      }
-
-      await response.json();
-
-      clearCart();
-      toast({
-        title: "Order placed successfully!",
-        description: "Thank you for your purchase.",
-      });
-      navigate("/orders");
-    } catch (error) {
-      console.error("Checkout error:", error);
-      toast({
-        title: "Checkout failed",
-        description: "There was a problem placing your order. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    navigate("/checkout");
   };
 
   return (
@@ -230,14 +193,7 @@ export default function Cart() {
                   onClick={handleCheckout}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    "Place Order"
-                  )}
+                  Proceed to Checkout
                 </Button>
 
                 {/* Clear Cart Button */}

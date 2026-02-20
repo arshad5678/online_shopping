@@ -6,12 +6,26 @@ const router = express.Router();
 // Create new order
 router.post("/", async (req, res) => {
     try {
-        const { userId, items, totalAmount } = req.body;
+        const { userId, items, totalAmount, shippingDetails, paymentMethod, upiId } = req.body;
+
+        // Basic validation
+        if (!shippingDetails || !shippingDetails.name || !shippingDetails.phone || !shippingDetails.address) {
+            return res.status(400).json({ message: "Missing shipping details" });
+        }
+        if (!paymentMethod) {
+            return res.status(400).json({ message: "Missing payment method" });
+        }
+        if (paymentMethod === 'UPI' && !upiId) {
+            return res.status(400).json({ message: "UPI ID is required for UPI payment" });
+        }
 
         const newOrder = new Order({
             userId,
             items,
             totalAmount,
+            shippingDetails,
+            paymentMethod,
+            upiId: paymentMethod === 'UPI' ? upiId : undefined,
             status: 'pending' // Default status
         });
 

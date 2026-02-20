@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import Cart from "./pages/Cart";
 import ModeSelection from "./pages/ModeSelection";
 import ShoppingLogin from "./pages/ShoppingLogin";
+import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
@@ -53,6 +54,7 @@ function AppLayout() {
           <Route path="/products/:id" element={<ProductDetail />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />

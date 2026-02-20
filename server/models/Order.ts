@@ -12,6 +12,13 @@ export interface IOrder extends Document {
     userId: string;
     items: IOrderItem[];
     totalAmount: number;
+    shippingDetails: {
+        name: string;
+        phone: string;
+        address: string;
+    };
+    paymentMethod: 'COD' | 'UPI';
+    upiId?: string;
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
     createdAt: Date;
 }
@@ -28,6 +35,17 @@ const OrderSchema = new Schema({
     userId: { type: String, required: true },
     items: [OrderItemSchema],
     totalAmount: { type: Number, required: true },
+    shippingDetails: {
+        name: { type: String, required: true },
+        phone: { type: String, required: true },
+        address: { type: String, required: true }
+    },
+    paymentMethod: {
+        type: String,
+        enum: ['COD', 'UPI'],
+        required: true
+    },
+    upiId: { type: String },
     status: {
         type: String,
         enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],

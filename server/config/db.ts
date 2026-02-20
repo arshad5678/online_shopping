@@ -13,14 +13,28 @@ export const connectDB = async (uri?: string): Promise<void> => {
         }
 
         const conn = await mongoose.connect(mongoUri);
-
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error: any) {
         console.error(`Error: ${error.message}`);
-        // Log a helpful suggestion if it looks like a connection error
+
+        // Suggestion for connection errors
         if (error.message.includes("ENOTFOUND")) {
             console.error("Suggestion: Check if your MONGO_URI in .env is correct and if your IP is whitelisted in MongoDB Atlas.");
         }
-        process.exit(1);
+
+        // Fallback to in-memory database
+        console.log("Attempting to connect to in-memory database...");
+        try {
+            const { MongoMemoryServer } = await import('mongodb-memory-server');
+            const mongod = await MongoMemoryServer.create();
+            const uri = mongod.getUri();
+
+            const conn = await mongoose.connect(uri);
+            console.log(`Fallback: MongoDB Connected to In-Memory Database: ${conn.connection.host}`);
+            console.log("WARNING: Using in-memory database. Data will not be persisted afterrestart.");
+        } catch (fallbackError: any) {
+            console.error(`Fallback Error: ${fallbackError.message}`);
+            process.exit(1);
+        }
     }
 };
