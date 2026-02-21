@@ -22,18 +22,24 @@ export const connectDB = async (uri?: string): Promise<void> => {
             console.error("Suggestion: Check if your MONGO_URI in .env is correct and if your IP is whitelisted in MongoDB Atlas.");
         }
 
-        // Fallback to in-memory database
-        console.log("Attempting to connect to in-memory database...");
-        try {
-            const { MongoMemoryServer } = await import('mongodb-memory-server');
-            const mongod = await MongoMemoryServer.create();
-            const uri = mongod.getUri();
+        // Fallback to in-memory database (only in development)
+        if (process.env.NODE_ENV !== 'production') {
+            console.log("Attempting to connect to in-memory database...");
+            try {
+                const { MongoMemoryServer } = await import('mongodb-memory-server');
+                const mongod = await MongoMemoryServer.create();
+                const uri = mongod.getUri();
 
-            const conn = await mongoose.connect(uri);
-            console.log(`Fallback: MongoDB Connected to In-Memory Database: ${conn.connection.host}`);
-            console.log("WARNING: Using in-memory database. Data will not be persisted afterrestart.");
-        } catch (fallbackError: any) {
-            console.error(`Fallback Error: ${fallbackError.message}`);
+                const conn = await mongoose.connect(uri);
+                console.log(`Fallback: MongoDB Connected to In-Memory Database: ${conn.connection.host}`);
+                console.log("WARNING: Using in-memory database. Data will not be persisted afterrestart.");
+            } catch (fallbackError: any) {
+                console.error(`Fallback Error: ${fallbackError.message}`);
+                process.exit(1);
+            }
+        } else {
+            console.error("Production environment: Cannot fall back to in-memory database.");
+            console.error("Please ensure MONGO_URI or MONGODB_URI environment variable is set correctly.");
             process.exit(1);
         }
     }

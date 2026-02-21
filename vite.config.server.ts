@@ -34,6 +34,7 @@ export default defineConfig({
         "cors",
         "mongoose",
         "dotenv",
+        "mongodb-memory-server",
       ],
       output: {
         format: "es",
