@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./global.css";
 
 import { Toaster } from "@/components/ui/toaster";
@@ -35,6 +35,27 @@ function AppLayout() {
   const isModeSelection = location.pathname === '/';
   const isShoppingLogin = location.pathname === '/shopping-login';
   const hideHeaderFooter = isModeSelection || isShoppingLogin;
+
+  // Globally disable Google One Tap auto-prompt on all pages
+  useEffect(() => {
+    const disableGoogleOneTap = () => {
+      if (window.google?.accounts?.id) {
+        try {
+          window.google.accounts.id.cancel();
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+    };
+
+    // Run immediately
+    disableGoogleOneTap();
+
+    // Run after a short delay in case Google script loads later
+    const timer = setTimeout(disableGoogleOneTap, 500);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   // Always show header except on mode selection and login
   const shouldShowHeader = !hideHeaderFooter;

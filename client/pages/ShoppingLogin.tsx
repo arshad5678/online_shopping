@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useGoogleAuth } from "@/hooks/useGoogleAuth";
 import { useMode } from "@/hooks/useMode";
+import { useAuth } from "@/hooks/useAuth";
 import { ShoppingBag, ArrowLeft, Sparkles } from "lucide-react";
 
 /**
@@ -39,12 +40,29 @@ export default function ShoppingLogin() {
   const navigate = useNavigate();
   const { demoGoogleSignIn, initializeGoogle, isGoogleAvailable } = useGoogleAuth();
   const { clearMode } = useMode();
+  const { isAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [googleButtonReady, setGoogleButtonReady] = useState(false);
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/home", { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   // Initialize Google Sign-In on mount
   useEffect(() => {
+    // Clear any existing Google One Tap state to prevent auto-login
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.cancel();
+      } catch (e) {
+        // Ignore errors
+      }
+    }
+
     if (isGoogleAvailable) {
       initializeGoogle("google-signin-button", () => {
         navigate("/home");

@@ -138,6 +138,8 @@ export function useGoogleAuth() {
             callback: handleGoogleResponse,
             auto_select: false,
             cancel_on_tap_outside: true,
+            ux_mode: 'popup',
+            context: 'signin',
           });
 
           const buttonElement = document.getElementById(buttonElementId);
@@ -178,6 +180,8 @@ export function useGoogleAuth() {
         callback: handleGoogleResponse,
         auto_select: false,
         cancel_on_tap_outside: true,
+        ux_mode: 'popup',
+        context: 'signin',
       });
 
       // Show the One Tap prompt
@@ -242,6 +246,8 @@ declare global {
             callback: (response: GoogleCredentialResponse) => void;
             auto_select?: boolean;
             cancel_on_tap_outside?: boolean;
+            ux_mode?: 'popup' | 'redirect';
+            context?: 'signin' | 'signup' | 'use';
           }) => void;
           renderButton: (
             element: HTMLElement,
