@@ -126,9 +126,18 @@ export function useGoogleAuth() {
         if (window.google?.accounts?.id) {
           clearInterval(checkGoogle);
 
+          // Disable One Tap to prevent auto-login
+          try {
+            window.google.accounts.id.cancel();
+          } catch (e) {
+            // Ignore if cancel fails
+          }
+
           window.google.accounts.id.initialize({
             client_id: GOOGLE_CLIENT_ID,
             callback: handleGoogleResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true,
           });
 
           const buttonElement = document.getElementById(buttonElementId);
@@ -167,6 +176,8 @@ export function useGoogleAuth() {
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true,
       });
 
       // Show the One Tap prompt
@@ -229,6 +240,8 @@ declare global {
           initialize: (config: {
             client_id: string;
             callback: (response: GoogleCredentialResponse) => void;
+            auto_select?: boolean;
+            cancel_on_tap_outside?: boolean;
           }) => void;
           renderButton: (
             element: HTMLElement,
@@ -241,6 +254,7 @@ declare global {
             }
           ) => void;
           prompt: () => void;
+          cancel: () => void;
           revoke: (email: string, callback: () => void) => void;
         };
       };
