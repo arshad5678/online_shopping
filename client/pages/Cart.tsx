@@ -34,6 +34,30 @@ export default function Cart() {
     navigate("/checkout");
   };
 
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-12">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-2">
+            Shopping Cart
+          </h1>
+          <div className="text-center py-16">
+            <p className="text-muted-foreground text-xl mb-8">
+              Please log in to view your cart.
+            </p>
+            <Button
+              onClick={() => navigate("/shopping-login")}
+              className="rounded-none"
+            >
+              Login to Continue
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Cart Header */}

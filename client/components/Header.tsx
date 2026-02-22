@@ -300,7 +300,7 @@ export default function Header() {
             className="hover:text-accent transition-colors relative"
           >
             <ShoppingBag size={20} />
-            {cartItemCount > 0 && (
+            {isAuthenticated && cartItemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-accent text-accent-foreground text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
                 {cartItemCount}
               </span>

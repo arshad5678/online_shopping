@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ShoppingBag, User, Settings } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * Dashboard Page
@@ -8,6 +9,7 @@ import { ShoppingBag, User, Settings } from "lucide-react";
  */
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   // Sample order data
   const orders = [
@@ -30,6 +32,30 @@ export default function Dashboard() {
       status: "Shipped",
     },
   ];
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-12">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold mb-2">
+            My Dashboard
+          </h1>
+          <div className="text-center py-16">
+            <p className="text-muted-foreground text-xl mb-8">
+              Please log in to view your dashboard.
+            </p>
+            <Button
+              onClick={() => navigate("/shopping-login")}
+              className="rounded-none"
+            >
+              Login to Continue
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
