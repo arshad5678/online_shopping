@@ -43,7 +43,8 @@ export default function Footer() {
             <ul className="space-y-4">
               <li>
                 <Link
-                  to="/"
+                  to="/home"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="text-sm text-primary-foreground/60 hover:text-accent transition-colors"
                 >
                   Home
@@ -51,7 +52,8 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/collections"
+                  to="/products"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="text-sm text-primary-foreground/60 hover:text-accent transition-colors"
                 >
                   Collections

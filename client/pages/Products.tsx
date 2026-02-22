@@ -131,7 +131,7 @@ export default function Products() {
         <div className="text-center">
           <Button
             variant="ghost"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="text-accent hover:text-accent/80"
           >
             ← Back to Home

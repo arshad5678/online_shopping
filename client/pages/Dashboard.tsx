@@ -56,7 +56,7 @@ export default function Dashboard() {
             <Button
               variant="outline"
               className="w-full rounded-none"
-              onClick={() => alert("Order tracking coming soon")}
+              onClick={() => navigate("/orders")}
             >
               View Orders
             </Button>
@@ -80,7 +80,11 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {orders.map((order) => (
-                  <tr key={order.id} className="border-b hover:bg-muted/50">
+                  <tr 
+                    key={order.id} 
+                    className="border-b hover:bg-muted/50 cursor-pointer"
+                    onClick={() => navigate("/orders")}
+                  >
                     <td className="py-3 px-4 font-medium">{order.id}</td>
                     <td className="py-3 px-4">{order.date}</td>
                     <td className="py-3 px-4">{order.total}</td>

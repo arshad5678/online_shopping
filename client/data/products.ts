@@ -26,16 +26,16 @@ export interface Product {
 export const products: Product[] = [
   {
     id: 1,
-    name: "Classic White Blazer",
+    name: "Classic Blazer",
     price: "$299.00",
     originalPrice: "$399.00",
     discount: "25% OFF",
     image:
-      "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1593030103066-0093718efeb9?q=80&w=1000&auto=format&fit=crop",
     images: [
-      "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1593030103066-0093718efeb9?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1617153767585-c8f5a6c167e5?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1000&auto=format&fit=crop",
     ],
     description:
       "Elevate your professional wardrobe with this timeless Classic White Blazer. Crafted from premium cotton blend fabric, this blazer offers both comfort and sophistication for any occasion.",
@@ -567,11 +567,11 @@ export const products: Product[] = [
     originalPrice: "$120.00",
     discount: "21% OFF",
     image:
-      "https://images.unsplash.com/photo-1601924994987-69e2c5e53b3e?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?q=80&w=1000&auto=format&fit=crop",
     images: [
-      "https://images.unsplash.com/photo-1601924994987-69e2c5e53b3e?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1582142892735-89b6982cc4a9?q=80&w=1000&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1601924638867-45e4e76a7d00?q=80&w=1000&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1551232864-3f0890e580d9?q=80&w=1000&auto=format&fit=crop",
     ],
     description:
       "Add a touch of ethereal beauty to your outfit with this translucent Silk Chiffon Scarf. Lightweight and airy, it features a delicate floral print.",

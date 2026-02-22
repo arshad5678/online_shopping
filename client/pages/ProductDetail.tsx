@@ -97,7 +97,7 @@ export default function ProductDetail() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center text-sm text-muted-foreground">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="hover:text-foreground transition-colors"
           >
             Home
